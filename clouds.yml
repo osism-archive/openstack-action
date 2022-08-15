@@ -1,4 +1,5 @@
 ---
+# NOTE: This is the clouds.yml file for the integration tests run by GitHub Actions.
 clouds:
   openstack:
     auth:
