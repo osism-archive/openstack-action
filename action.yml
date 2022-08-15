@@ -1,0 +1,65 @@
+---
+name: OpenStack Services Action
+description: Provide OpenStack services for integration testing
+inputs:
+  password:
+    description: OpenStack service password
+    required: true
+    default: password
+  release:
+    description: OpenStack release
+    required: true
+    default: yoga
+  services:
+    description: OpenStack services to provide
+    required: true
+    default: keystone g-api
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v3
+      with:
+        ref: stable/${{ inputs.release }}
+        repository: openstack/devstack
+        path: ./devstack
+    - run: |
+        set -o xtrace
+
+        # NOTE: https://github.com/EmilienM/devstack-action/blob/main/action.yaml
+        sudo apt-get remove --purge -y \
+            esl-erlang \
+            mysql-* \
+            postgresql* \
+            python3-pyasn1-modules \
+            python3-simplejson
+        sudo rm -rf /var/lib/mysql
+        sudo apt-get install -y \
+            erlang \
+            rabbitmq-server \
+            runc
+
+        python3 -m pip --no-cache-dir install -U 'pip==22.2.2'
+
+        pushd devstack
+
+        sudo cat << EOT > local.conf
+        [[local|localrc]]
+        ADMIN_PASSWORD=$PASSWORD
+        DATABASE_PASSWORD=$PASSWORD
+        RABBIT_PASSWORD=$PASSWORD
+        SERVICE_PASSWORD=$PASSWORD
+
+        HOST_IP=127.0.0.1
+        INSTALL_TEMPEST=False
+
+        disable_all_services
+        enable_service mysql $SERVICES
+        EOT
+
+        bash stack.sh
+
+        popd
+      shell: bash
+      env:
+        PASSWORD: ${{ inputs.password }}
+        SERVICES: ${{ inputs.services }}

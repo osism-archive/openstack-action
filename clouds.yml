@@ -1,0 +1,14 @@
+---
+clouds:
+  openstack:
+    auth:
+      auth_url: http://localhost/identity
+      username: admin
+      password: password
+      project_name: admin
+      project_domain_name: Default
+      user_domain_name: Default
+    region: RegionOne
+    block_storage_api_version: 3
+    identity_api_version: 3
+    interface: public
