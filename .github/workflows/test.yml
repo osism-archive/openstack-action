@@ -2,6 +2,7 @@
 name: Test
 
 "on":
+  pull_request:
   push:
     branches:
       - main
@@ -13,5 +14,5 @@ jobs:
       - uses: actions/checkout@v3
       - uses: osism/openstack-action@main
       - uses: actions/setup-python@v4
-      - run: pip3 install python-openstackclient==5.8.0
+      - run: pip3 install python-openstackclient==6.0.0
       - run: openstack --os-cloud openstack catalog list
