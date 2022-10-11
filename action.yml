@@ -9,7 +9,7 @@ inputs:
   release:
     description: OpenStack release
     required: true
-    default: yoga
+    default: zed
   services:
     description: OpenStack services to provide
     required: true
