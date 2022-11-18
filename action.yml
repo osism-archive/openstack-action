@@ -25,6 +25,8 @@ runs:
     - run: |
         set -o xtrace
 
+        sudo apt-get update
+
         # NOTE: https://github.com/EmilienM/devstack-action/blob/main/action.yaml
         sudo apt-get remove --purge -y \
             esl-erlang \
@@ -33,12 +35,11 @@ runs:
             python3-pyasn1-modules \
             python3-simplejson
         sudo rm -rf /var/lib/mysql
-        sudo apt-get install -y \
+        sudo apt-get install -y --fix-missing \
             erlang \
-            rabbitmq-server \
-            runc
+            rabbitmq-server
 
-        python3 -m pip --no-cache-dir install -U 'pip==22.2.2'
+        python3 -m pip --no-cache-dir install -U 'pip==22.3.1'
 
         pushd devstack
 
