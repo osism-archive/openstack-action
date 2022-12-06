@@ -33,7 +33,7 @@ runs:
             mysql-* \
             postgresql* \
             python3-pyasn1-modules \
-            python3-simplejson
+            python3-simplejson || true
         sudo rm -rf /var/lib/mysql
         sudo apt-get install -y --fix-missing \
             erlang \
